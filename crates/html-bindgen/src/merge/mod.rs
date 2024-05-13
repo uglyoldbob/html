@@ -361,15 +361,43 @@ fn merge_attributes(
             match interface_map.get(&interface) {
                 Some(interfacemap) => {
                     for (name, attr) in interfacemap {
-                        if !vec.contains(attr) {
+                        let mut contains = false;
+                        let mut existing = None;
+                        for a in vec.iter() {
+                            let a: &Attribute = a;
+                            if a.name == attr.name {
+                                contains = true;
+                                existing = Some(a);
+                                break;
+                            }
+                        }
+                        if !contains {
+                            eprintln!("Adding attribute 9 {} {:?}", name, attr);
                             vec.push(attr.to_owned());
+                        }
+                        else {
+                            eprintln!("Skipping attribute {} {:?} because of {:?}", name, attr, existing);
                         }
                     }
                 }
                 None => {
                     for v in el.attributes.iter() {
-                        if !vec.contains(v) {
+                        let mut contains = false;
+                        let mut existing = None;
+                        for a in vec.iter() {
+                            let a: &Attribute = a;
+                            if a.name == v.name {
+                                contains = true;
+                                existing = Some(a);
+                                break;
+                            }
+                        }
+                        if !contains {
+                            eprintln!("Adding attribute 8 {:?}", v);
                             vec.push(v.to_owned());
+                        }
+                        else {
+                            eprintln!("Skipping attribute {:?} because fo {:?}", v, existing);
                         }
                     }
                 }
