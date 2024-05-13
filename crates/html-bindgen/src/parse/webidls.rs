@@ -40,7 +40,6 @@ pub fn parse_webidls(
         for def in definitions {
             match def {
                 weedle::Definition::Interface(interface) => {
-                    eprintln!("INTERFACE INFO {} IS {:?}", parse_interface_name(&interface), interface.inheritance);
                     interfacemap.insert(parse_interface_name(&interface), ParsedInterface {
                         name: parse_interface_name(&interface),
                         inherits_from: parse_inheritance(&interface),
@@ -70,7 +69,6 @@ pub fn parse_webidls(
                     includes.push((include.lhs_identifier.0.to_string(), include.rhs_identifier.0.to_string()));
                 }
                 weedle::Definition::PartialInterface(interface) => {
-                    eprintln!("PARTIAL INTERFACE {}", interface.identifier.0);
                     interfacemap.insert(interface.identifier.0.to_string(), ParsedInterface {
                         name: interface.identifier.0.to_string(),
                         inherits_from: None,
@@ -90,9 +88,7 @@ pub fn parse_webidls(
         }
     }
     for (i1, i2) in includes {
-        eprintln!("INCLUDE: {} <- {}", i1, i2);
         if let Some(interface) = interfacemap.get_mut(&i1) {
-            eprintln!("Found {} to include {}", i1, i2);
             interface.includes.push(i2);
         }
     }

@@ -314,9 +314,7 @@ fn merge_attributes(
         .collect::<HashMap<String, _>>();
     for (name, interface) in interfaces.iter() {
         if !interface.includes.is_empty() {
-            eprintln!("Need to include interface attributes for {}", name);
             for include in interface.includes.iter() {
-                eprintln!("\tINCLUDE {}", include);
                 if let Some(include_me) = interfaces.get(include) {
                     if let Some(imap) = interface_map.get_mut(name) {
                         if !include_me.includes.is_empty() {
@@ -335,13 +333,6 @@ fn merge_attributes(
         }
     }
 
-    for (k, hm) in interface_map.iter() {
-        eprintln!("Interface {}", k);
-        for (n, attr) in hm.iter() {
-            eprintln!("\t {} {:?}", n, attr);
-        }
-    }
-
     // From https://www.w3.org/TR/role-attribute/
     let role_attr = Attribute {
         name: "role".to_owned(),
@@ -354,15 +345,12 @@ fn merge_attributes(
 
     for el in elements.values() {
         let vec = output.entry(el.struct_name.clone()).or_default();
-        eprintln!("Checking for interface {} for {}", el.dom_interface, el.struct_name);
 
         let mut interfaces = vec![el.dom_interface.to_owned()];
         if !el.dom_name.is_empty() && el.dom_name != el.dom_interface {
-            eprintln!("Pushing dom interface {}", el.dom_name);
             interfaces.push(el.dom_name.clone());
         }
         if let Some(i) = &el.dom_base {
-            eprintln!("Pushing dom base {}", i);
             interfaces.push(i.clone());
         }
         for i in el.includes.iter() {
@@ -370,12 +358,10 @@ fn merge_attributes(
         }
 
         for interface in interfaces {
-            eprintln!("\tAdding attributes from {}", interface);
             match interface_map.get(&interface) {
                 Some(interfacemap) => {
                     for (name, attr) in interfacemap {
                         if !vec.contains(attr) {
-                            eprintln!("ATTRIBUTE 7 is {} {} {:?}", interface, name, attr);
                             vec.push(attr.to_owned());
                         }
                     }
