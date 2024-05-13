@@ -308,10 +308,6 @@ fn append_super_categories(cat_output: &mut Vec<ParsedRelationship>) {
 
 /// Find out which WebIDL interface this element relies on.
 fn parse_dom_interface(lines: &[String]) -> String {
-    eprintln!("PARSE DOM:");
-    for s in lines.iter() {
-        eprintln!("\t{}", s);
-    }
     let line = lines.get(0).as_deref().unwrap().clone();
 
     if line.starts_with("Uses") {

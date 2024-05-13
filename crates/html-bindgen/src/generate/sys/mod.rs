@@ -297,7 +297,11 @@ fn generate_attribute_display(attr: &Attribute) -> String {
                 write!(writer, r#" {name}="{{field}}""#)?;
             }}"##
         ),
-        AttributeType::Identifier(_) => todo!(),
+        AttributeType::Identifier(i) => format!(
+            r##"if let Some(field) = self.{field_name}.as_ref() {{
+                write!(writer, r#" {name}="{{field}}""#)?;
+            }}"##
+        ),
         AttributeType::Enumerable(_) => todo!(),
     }
 }

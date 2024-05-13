@@ -565,6 +565,9 @@ fn gen_methods(struct_name: &str, attributes: &[Attribute]) -> String {
             AttributeType::String => {
                 format!("self.sys.{field_name}.as_deref()")
             }
+            AttributeType::Identifier(i) => {
+                format!("self.sys.{field_name}.as_deref()")
+            }
             _ => todo!("unhandled type"),
         };
         let field_setter = match &attr.ty {
